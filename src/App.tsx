@@ -5,12 +5,13 @@ import ReactFlow, {
   addEdge,
   useZoomPanHelper,
   Elements,
-  OnLoadParams, Edge, Connection, Position, Handle,Background,isNode, FlowElement,Node,BackgroundVariant
+  OnLoadParams, Edge, Connection, Controls, updateEdge,Position, Handle,Background,isNode, FlowElement,Node,BackgroundVariant
 } from 'react-flow-renderer';
 import localforage from 'localforage';
 
 import './save.css';
 import './App.css';
+import { idText } from 'typescript';
 
 localforage.config({
   name: 'react-flow-docs',
@@ -22,20 +23,23 @@ const flowKey = 'example-flow';
 const getNodeId = () => `randomnode_${+new Date()}`;
 
 const initialElements: Elements = [
-  { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, className: 'light' },
-  { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, className: 'light' },
-  { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, className: 'light' },
-  { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, className: 'light' },
-  { id: 'e1-2', source: '1', target: '2', animated: true },
-  { id: 'e1-3', source: '1', target: '3' },
+  // { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, className: 'light' },
+  // { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, className: 'light' },
+  // { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, className: 'light' },
+  // { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, className: 'light' },
+  // { id: 'e1-2', source: '1', target: '2', animated: true },
+  // { id: 'e1-3', source: '1', target: '3' },
   {
     id: '6',
     type: 'special',
     position: { x: 160, y: 200 },
-    data: { text: 'A custom node' },
+    data: { text: 'A custom node', id:'6', type:'special' },
   },
 ];
 
+function fun() {
+  console.log('test');
+}
 export const SaveRestore = () => {
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
   const [elements, setElements] = useState<Elements>(initialElements);
@@ -45,6 +49,7 @@ export const SaveRestore = () => {
   const onLoad = (reactFlowInstance: OnLoadParams) => setRfInstance(reactFlowInstance);
 
   const { transform } = useZoomPanHelper();
+  
 
   const onSave = useCallback(() => {
     console.log("saving");
@@ -118,10 +123,11 @@ export const SaveRestore = () => {
     background: '#9CA8B3',
     color: '#FFF',
     padding: 10,
-    width: 300,
-    height: 150,
+    width: 210,
+    height: 100,
   };
   const CustomNodeComponent = ( {data} : {data:any})  => {
+    //data.func;
     return (
       <div style={customNodeStyles}>
         
@@ -139,16 +145,21 @@ export const SaveRestore = () => {
           id="b"
           style={{ top: '70%', borderRadius: 0 }}
         />
-        <div>
-          <input></input>
+        <div className = "box-flex">
+          <div className = "input-flex">
+            <label>Trigger</label>
+            <input className = "lbl"></input>
+          </div>
+          <div className = "input-flex">
+            <label>Prompt</label>
+            <input className = "lbl"></input>
+          </div>
+          <div className = "input-flex">
+            <label></label>
+            <input></input>
+          </div>
         </div>
-        <div>
-          <input></input>
         </div>
-        <div>
-          <input></input>
-        </div>
-      </div>
     );
   };
   const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
@@ -199,6 +210,9 @@ export const SaveRestore = () => {
       
   );
 };
+
+
+
 
 
 function App() {

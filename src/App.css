@@ -7,6 +7,24 @@ button {
   margin: 10px;
   margin-right: 30px;
 }
+.box-flex {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-flex{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.input-flex label{
+  align-self: start;
+  width: 30%;
+}
+.lbl {
+  width: 70%;
+}
 .button-holder{
   position: relative;
   display: flex;
