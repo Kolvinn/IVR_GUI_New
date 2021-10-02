@@ -37,9 +37,9 @@ const initialElements: Elements = [
   },
 ];
 
-function fun() {
-  console.log('test');
-}
+// function fun() {
+//   console.log('test');
+// }
 export const SaveRestore = () => {
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
   const [elements, setElements] = useState<Elements>(initialElements);
@@ -87,7 +87,7 @@ export const SaveRestore = () => {
           x: x,
           y: y,
         },
-        data: { text: 'A custom node', type: {type}, x: {x}, y:{y}, func: {fun}},
+        data: { text: 'A custom node', type: {type}, x: {x}, y:{y}},
       };
 
     setElements((els) => els.concat(newNode));
@@ -103,7 +103,6 @@ export const SaveRestore = () => {
     height: 100,
   };
   const CustomNodeComponent = ( {data} : {data:any})  => {
-    data.func;
     return (
       <div style={customNodeStyles}>
         
