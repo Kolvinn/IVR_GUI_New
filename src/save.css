@@ -1,0 +1,13 @@
+.save__controls {
+    flex-direction:column ;
+    align-items: center;
+    right: 10px;
+    top: 10px;
+    z-index: 4;
+    font-size: 12px;
+  }
+  
+  .save__controls button {
+    margin-left: 5px;
+  }
+
