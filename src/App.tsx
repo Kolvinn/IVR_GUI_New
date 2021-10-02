@@ -33,7 +33,7 @@ const initialElements: Elements = [
     id: '6',
     type: 'special',
     position: { x: 160, y: 200 },
-    data: { text: 'A custom node', id:'6', type:'special' },
+    data: { idthing: 'lolololol', text: 'A custom node', id:'6', type:'special' },
   },
 ];
 
@@ -76,48 +76,24 @@ export const SaveRestore = () => {
 
   
   const onAdd = useCallback(() => {
+    var id = getNodeId();
+    var type = 'special';
+    var x = Math.random() * window.innerWidth - 100;
+    var y =Math.random() * window.innerHeight;
     const newNode = {
-        id: getNodeId(),
-        type: 'special',
+        id: id,
+        type: type,
         position: {
-          x: Math.random() * window.innerWidth - 100,
-          y: Math.random() * window.innerHeight,
+          x: x,
+          y: y,
         },
-        data: { text: 'A custom node' },
+        data: { text: 'A custom node', type: {type}, x: {x}, y:{y}, func: {fun}},
       };
 
     setElements((els) => els.concat(newNode));
   }, [setElements]);
 
-  const updatePos = () => {
-    setElements((elms) => {
-      return elms.map((el) => {
-        if (isNode(el)) {
-          el.position = {
-            x: Math.random() * 400,
-            y: Math.random() * 400,
-          };
-        }
 
-        return el;
-      });
-    });
-  };
-
-  const logToObject = () => console.log(rfInstance?.toObject());
-  const resetTransform = () => rfInstance?.setTransform({ x: 0, y: 0, zoom: 1 });
-
-  const toggleClassnames = () => {
-    setElements((elms) => {
-      return elms.map((el) => {
-        if (isNode(el)) {
-          el.className = el.className === 'light' ? 'dark' : 'light';
-        }
-
-        return el;
-      });
-    });
-  };
 
   const customNodeStyles = {
     background: '#9CA8B3',
@@ -127,7 +103,7 @@ export const SaveRestore = () => {
     height: 100,
   };
   const CustomNodeComponent = ( {data} : {data:any})  => {
-    //data.func;
+    data.func;
     return (
       <div style={customNodeStyles}>
         
