@@ -1,0 +1,113 @@
+{
+  "elements": [
+    {
+      "id": "node_1633264616219",
+      "type": "special",
+      "position": {
+        "x": 117.54214596031184,
+        "y": 327.6149830895022
+      },
+      "data": {
+        "nodeId": "node_1633264616219",
+        "text": "node_1633264616219",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 47.54214596031187
+        },
+        "y": {
+          "y": 358.6149830895022
+        },
+        "trigger": "",
+        "prompt": "Say 1 or 2",
+        "connection": [
+          {
+            "source": "node_1633264616219",
+            "sourceHandle": "b",
+            "target": "node_1633264652670",
+            "targetHandle": null
+          },
+          {
+            "source": "node_1633264616219",
+            "sourceHandle": "b",
+            "target": "node_1633264635286",
+            "targetHandle": null
+          }
+        ],
+        "audioFileLocation": "node_1633264616219.mp3"
+      }
+    },
+    {
+      "id": "node_1633264635286",
+      "type": "special",
+      "position": {
+        "x": 528.87595566724,
+        "y": 410.8347282156042
+      },
+      "data": {
+        "nodeId": "node_1633264635286",
+        "text": "node_1633264635286",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 410.8759556672399
+        },
+        "y": {
+          "y": 1009.8347282156042
+        },
+        "trigger": "1",
+        "prompt": "thanks for saying 2",
+        "connection": [],
+        "audioFileLocation": "node_1633264635286.mp3"
+      }
+    },
+    {
+      "id": "node_1633264652670",
+      "type": "special",
+      "position": {
+        "x": 530.8663720514418,
+        "y": 258.12886423086405
+      },
+      "data": {
+        "nodeId": "node_1633264652670",
+        "text": "node_1633264652670",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 748.8663720514418
+        },
+        "y": {
+          "y": 432.12886423086405
+        },
+        "trigger": "",
+        "prompt": "thanks for saying 1",
+        "connection": [],
+        "audioFileLocation": "node_1633264652670.mp3"
+      }
+    },
+    {
+      "source": "node_1633264616219",
+      "sourceHandle": "b",
+      "target": "node_1633264652670",
+      "targetHandle": null,
+      "id": "reactflow__edge-node_1633264616219b-node_1633264652670null",
+      "type": "default"
+    },
+    {
+      "source": "node_1633264616219",
+      "sourceHandle": "b",
+      "target": "node_1633264635286",
+      "targetHandle": null,
+      "id": "reactflow__edge-node_1633264616219b-node_1633264635286null",
+      "type": "default"
+    }
+  ],
+  "position": [
+    66.21515196709595,
+    -98.60389957338862
+  ],
+  "zoom": 1.3058258449441862
+}

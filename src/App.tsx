@@ -10,9 +10,12 @@ import ReactFlow, {
 import localforage from 'localforage';
 import { nodeTypes } from './CustomNodeComponent';
 // import {customNodeStyles} from './Styles'
+import { saveAs } from 'file-saver';
 
 import './save.css';
 import './App.css';
+import {writeJsonFile} from 'write-json-file';
+
 
 declare type Connect<T = any> = {
   source:string|null,
@@ -20,6 +23,7 @@ declare type Connect<T = any> = {
 }
 
 declare type ConnectionData<T = any> = Array<Connect<T>>;
+
 
 
 const http = require("http");
@@ -89,15 +93,34 @@ export const SaveRestore = () => {
       localforage.setItem(flowKey, flow);
 
       var i = 0;
+
+      /**
+       * iterate over the final object and create audio files per prompt
+       */
       flow.elements.forEach(element => {
         if(element.id != null && element.data != null){
           var audioFile:string = element.id + '.mp3';
           console.log("ELEMENTAL DATA: ", element.data);
           element.data.audioFileLocation = audioFile;
           //console.log(element.data.audioFileLocation);
-          createAudioFile(audioFile, element.data.prompt);
+          createAudioFile(audioFile, element.data.prompt);          
         }
       });
+
+      /**
+       * now write the object to a file via node backend.
+       * This will return a 500 for some reason, but it works.
+       */
+      fetch('http://localhost:8080/writefile',
+          {
+            mode: 'cors',
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(flow)
+        });
 
     }
   }, [rfInstance]);
