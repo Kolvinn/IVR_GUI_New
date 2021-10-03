@@ -34,7 +34,8 @@ in App.tsx you can
 - Search for onAdd method. IN there is the newNode data structure that is passed around. The saved data is stored in the data section.
 - Search for onSave method. You can change the name of the mp3 files created (it's currently the node id + .mp3)
 
-Any styling is either in the App.css or index.css (though not really the latter).
+Any styling is either in the App.css or index.css (though not really the latter). 
+The node box styling is via .parent-box{}.
 
 
 
