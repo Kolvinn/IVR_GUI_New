@@ -5,6 +5,8 @@ const googleTTS = require ('google-tts-api'); // ES6 or TypeScript
 var FileSaver = require('file-saver');
 const GoogleTts = require("google-tts.js") 
 
+const directory = "C:/Users/jerem/ReactTest/finalapp/IVR_GUI_New/src/"
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to CORS server 😁');
@@ -17,29 +19,23 @@ app.listen(8080, () => {
     console.log('listening on port 8080');
 });
 
+
 app.get('/fetchtext', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
     var prompt = req.query.prompt;
-    var fileName = "C:/Users/jerem/ReactTest/finalapp/IVR_GUI_New/src/" +req.query.fileName;
-    // console.log(res);
-    // //res.send('This has CORS enabled 🎈');
-    //  const url = googleTTS.getAudioUrl(prompt, {
-    //      lang: 'en',
-    //     slow: false,
-    //      host: 'https://translate.google.com',
-    //    });
-    // console.log(url); // https://translate.google.com/translate_tts?...
-    
-    // //fetch(url, {mode: 'cors'});
+    var fileName = directory +req.query.fileName;
 
-    // FileSaver.saveAs(url, "./src/blahblah.mp3");
     console.log(prompt, fileName);
-    GoogleTts.saveFile(prompt, "id", fileName).then(console.log);
+
+    /**
+     * This is the google call tts call. 
+     * I haven't looked at what saveFile actually returns beyond the file.
+     */
+    GoogleTts.saveFile(prompt, "id", fileName).then((vars)=> 
+    {
+        console.log(vars);
+    });
 
     
 
 });
-// create a GET route
-// app.get('/express_backend', (req, res) => { //Line 9
-//   res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' }); //Line 10
-// }); //Line 11

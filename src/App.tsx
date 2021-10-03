@@ -5,17 +5,14 @@
     addEdge,
     useZoomPanHelper,
     Elements,
-    OnLoadParams, Edge, Connection, Controls, getConnectedEdges,Position, Handle,Background,isNode, FlowElement,Node,BackgroundVariant
+    OnLoadParams, Edge, Connection,Position, Handle,Background, FlowElement,Node,BackgroundVariant
   } from 'react-flow-renderer';
   import localforage from 'localforage';
+  import { nodeTypes } from './CustomNodeComponent';
+  // import {customNodeStyles} from './Styles'
 
   import './save.css';
   import './App.css';
-  import { idText } from 'typescript';
-  //const GoogleTts = require("google-tts.js") 
-  import * as googleTTS from 'google-tts-api'; // ES6 or TypeScript
-  import { saveAs } from "file-saver";
-  import { setConnectionPosition } from 'react-flow-renderer/dist/store/actions';
 
   declare type Connect<T = any> = {
     source:string|null,
@@ -24,9 +21,6 @@
 
   declare type ConnectionData<T = any> = Array<Connect<T>>;
 
-  interface ConnectionProps {
-    connections: ConnectionData[];
-  }
 
   const http = require("http");
 
@@ -133,12 +127,16 @@
     
     /**
      * Used to add componenets on the screen
+     * You can add things in the data {} section that will get passed around and can be updated if you want some data to persist. 
+     * 
+     * If you want to change box starting position, change the x and y vars to something more useful.
      */
     const onAdd = useCallback(() => {
       var id = getNodeId();
       var type = 'special';
       var x = Math.random() * window.innerWidth - 100;
       var y =Math.random() * window.innerHeight;
+
       const newNode = {
           id: id,
           type: type,
@@ -146,118 +144,110 @@
             x: x,
             y: y,
           },
-          data: { nodeId: id,text: id, type: {type}, x: {x}, y:{y}, trigger: "", prompt:"", connection:[], audioFileLocation:""},
+          data: { 
+            nodeId: id,
+            text: id, 
+            type: {type}, 
+            x: {x}, 
+            y:{y}, 
+            trigger: "", 
+            prompt:"", 
+            connection:[], 
+            audioFileLocation:""
+          },
         };
-        // state.push({
-        //   id:id,
-        //   trigger:"",
-        //   prompt: "",
-        //   connections: [],
-        //   promptFile: "",
-        // });
        
       setElements((els) => els.concat(newNode));
     }, [setElements]);
 
 
-    
+    // const CustomNodeComponent = ( {data} : {data:any})  => {
 
-    const customNodeStyles = {
-      background: '#9CA8B3',
-      color: '#FFF',
-      padding: 10,
-      width: 210,
-      height: 100,
-    };
-    // const handleInputChange = (e:any) => {
-    //     this.setState({ value: e.target.value });
+
+
+
+
+
+    // const handleInputChange = (e:any, type:string, data:any) => {
+    //   if(type == "prompt"){
+    //     data.prompt = e.target.value;
     //   }
-    const CustomNodeComponent = ( {data} : {data:any})  => {
+    //   else if (type =="trigger"){
+    //     data.trigger = e.target.value;
+    //   }
+    //  console.log(e.target.value);
+    //  console.log(data);
 
-
-
-
-
-
-
-
-    const handleInputChange = (e:any, type:string, data:any) => {
-      if(type == "prompt"){
-        data.prompt = e.target.value;
-      }
-      else if (type =="trigger"){
-        data.trigger = e.target.value;
-      }
-     console.log(e.target.value);
-     console.log(data);
-
-    };
+    // };
     
       
-      return (
-        <div style={customNodeStyles}>
+    //   return (
+    //     <div style={customNodeStyles}>
           
-          <Handle type="target" position = {Position.Left} style={{ borderRadius: 0 }} />
-          <div>{data.text}</div>
-          <Handle
-            type="source"
-            position={Position.Right} 
-            id="b"
-            style={{ top: '20%', borderRadius: 0 }}
-            onConnect = {(connection) => {
-              data.connection.push(connection);
-            }}
-          />
-          <Handle
-            type="source"
-            position={Position.Right} 
-            id="b"
-            style={{ top: '40%', borderRadius: 0 }}
-            onConnect = {(connection) => {
-              data.connection.push(connection);
-            }}
-          />
-          <Handle
-            type="source"
-            position={Position.Right} 
-            id="b"
-            style={{ top: '60%', borderRadius: 0 }}
-            onConnect = {(connection) => {
-              data.connection.push(connection);
-            }}
-          />
-          <Handle
-            type="source"
-            position={Position.Right} 
-            id="b"
-            style={{ top: '80%', borderRadius: 0 }}
-            onConnect = {(connection) => {
-              data.connection.push(connection);
-            }}
-          />
-          <div className = "box-flex">
-            <div className = "input-flex">
-              <label>Trigger</label>
-              <input className = "lbl" onChange = { (e) => {handleInputChange(e, "trigger",data)}}></input>
-            </div>
-            <div className = "input-flex">
-              <label>Prompt</label>
-              <input className = "lbl" onChange = { (e) => {handleInputChange(e, "prompt",data)}}></input>
-            </div>
-            {/* <div className = "input-flex">
-              <label></label>
-              <input></input>
-            </div> */}
-          </div>
-          </div>
-      );
-    };
+    //       <Handle type="target" position = {Position.Left} style={{ borderRadius: 0 }} />
+    //       <div>{data.text}</div>
+    //       <Handle
+    //         type="source"
+    //         position={Position.Right} 
+    //         id="b"
+    //         style={{ top: '20%', borderRadius: 0 }}
+    //         onConnect = {(connection) => {
+    //           data.connection.push(connection);
+    //         }}
+    //       />
+    //       <Handle
+    //         type="source"
+    //         position={Position.Right} 
+    //         id="b"
+    //         style={{ top: '40%', borderRadius: 0 }}
+    //         onConnect = {(connection) => {
+    //           data.connection.push(connection);
+    //         }}
+    //       />
+    //       <Handle
+    //         type="source"
+    //         position={Position.Right} 
+    //         id="b"
+    //         style={{ top: '60%', borderRadius: 0 }}
+    //         onConnect = {(connection) => {
+    //           data.connection.push(connection);
+    //         }}
+    //       />
+    //       <Handle
+    //         type="source"
+    //         position={Position.Right} 
+    //         id="b"
+    //         style={{ top: '80%', borderRadius: 0 }}
+    //         onConnect = {(connection) => {
+    //           data.connection.push(connection);
+    //         }}
+    //       />
+    //       <div className = "box-flex">
+    //         <div className = "input-flex">
+    //           <label>Trigger</label>
+    //           <input className = "lbl" onChange = { (e) => {handleInputChange(e, "trigger",data)}}></input>
+    //         </div>
+    //         <div className = "input-flex">
+    //           <label>Prompt</label>
+    //           <input className = "lbl" onChange = { (e) => {handleInputChange(e, "prompt",data)}}></input>
+    //         </div>
+    //         {/* <div className = "input-flex">
+    //           <label></label>
+    //           <input></input>
+    //         </div> */}
+    //       </div>
+    //       </div>
+    //   );
+    // };
+
+
+
     const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
     const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
 
-    const nodeTypes = {
-      special: CustomNodeComponent,
-    };
+    // const nodeTypes = {
+    //   special: CustomNodeComponent,
+    // };
     
     return (
         <div className = "holder">
