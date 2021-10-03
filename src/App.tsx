@@ -12,6 +12,12 @@ import localforage from 'localforage';
 import './save.css';
 import './App.css';
 import { idText } from 'typescript';
+//const GoogleTts = require("google-tts.js") 
+import * as googleTTS from 'google-tts-api'; // ES6 or TypeScript
+import { saveAs } from "file-saver";
+
+
+const http = require("http");
 
 localforage.config({
   name: 'react-flow-docs',
@@ -41,6 +47,32 @@ const initialElements: Elements = [
 //   console.log('test');
 // }
 export const SaveRestore = () => {
+  
+  
+  //  add_header 'Access-Control-Allow-Origin' "*";
+  //  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';
+  //  add_header 'Access-Control-Allow-Headers' 'appID,authorizationkey';
+  //  //saveFile();
+  //  fetch(url)
+  //       .then(res => res.blob())
+  //       .then((blob) => {
+  //         console.log(blob);
+  //           //saveAs(blob, 'my-file-label.pdf');
+  //   });
+
+  //   fetch(url, {
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       Token: "sfg999666t673t7t82",
+  //       Access-Control-Allow-Origin: "*";
+  //     },
+  //     method: "POST"
+  //   });
+  
+
+ //GoogleTts.saveFile("abc", "id", "./src/audio.mp3").then(console.log)
+
   const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
   const [elements, setElements] = useState<Elements>(initialElements);
 
@@ -103,6 +135,7 @@ export const SaveRestore = () => {
     height: 100,
   };
   const CustomNodeComponent = ( {data} : {data:any})  => {
+
     return (
       <div style={customNodeStyles}>
         
@@ -188,16 +221,53 @@ export const SaveRestore = () => {
 
 
 
-
-
-function App() {
-  return (
-    <ReactFlowProvider >
-
-        <SaveRestore/>
+export default class App extends React.Component {
+  state = {
+    data: null
+  };
+  componentDidMount() {
+    this.callBackendAPI()
+      .then(res => {
+        this.setState({ data: res.express });
+        console.log(res);
         
-    </ReactFlowProvider>
-  );
+      })
+      .catch(err => console.log(err));
+
+      fetch('http://localhost:8080/fetchtext',{mode: 'cors'});
+  }
+    // fetching the GET route from the Express server which matches the GET route from server.js
+  callBackendAPI = async () => {
+    const response = await fetch('http://localhost:8080/cors', {mode: 'cors'});
+    const body = await response.json();
+    console.log('using cors',body);
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  }
+  render() {
+    return (
+      <ReactFlowProvider >
+
+         <SaveRestore/>
+         <p className="App-intro">{this.state.data}</p>
+     </ReactFlowProvider>
+
+    );
+  }
 }
 
-export default App;
+// class App extends React.Component() {
+//   Render() {}
+//     return (
+//     <ReactFlowProvider >
+
+//         <SaveRestore/>
+        
+//     </ReactFlowProvider>
+//   );
+// }
+// }
+
