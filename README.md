@@ -1,12 +1,43 @@
-# Getting Started with Create React App
+# Getting Started 
 
 Download and install node.js
 
-cd into cloned folder - you should just be able to 'npm i' to get this up and running.
+pull this repo
 
-## Available Scripts
+cd into cloned folder and run 'npm i' to install packages
 
-In the project directory, you can run:
+Open another terminal and cd into src. Run 'node server.js' to start running the node js backend server. You should get "listening on port 8080" if it's working.
+
+On the other terminal, run 'npm start' to run front end.
+
+## Using the GUI.
+
+Create new nodes and connect them together via the backend to the frontside.
+
+Add a "prompt" if you want to create an mp3 file for that node.
+
+Adding a "trigger" will not create a sound file, but will be stored as part of the object connection structure.
+
+## Saving.
+
+If you have the desired flow, click save. This will create an mp3 file per prompt and will also produce an JSON object structure of the flow.
+
+## Variables.
+
+in src/server.js, you can 
+- change the name of the .json file that is produced when you save.
+- change the lanuage of Googletts in the /fetchtext method.
+- You can also change ports that are used via app.listen. Though package.json has a proxy set up for localhost:8080 currently.
+- **Change the directory where the mp3 and json files are stored via the directory object. Currently to set some C drive. You will have to change this**
+
+in App.tsx you can
+- Search for onAdd method. IN there is the newNode data structure that is passed around. The saved data is stored in the data section.
+- Search for onSave method. You can change the name of the mp3 files created (it's currently the node id + .mp3)
+
+Any styling is either in the App.css or index.css (though not really the latter). 
+The node box styling is via .parent-box{}.
+
+
 
 ### `npm start`
 
