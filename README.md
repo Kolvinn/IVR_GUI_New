@@ -1,12 +1,29 @@
-# Getting Started with Create React App
+# Getting Started 
 
 Download and install node.js
 
-cd into cloned folder - you should just be able to 'npm i' to get this up and running.
+cd into cloned folder - 'npm i' to install packages
 
-## Available Scripts
+Open another terminal and cd into src. Run 'node server.js' to start running the node js backend server. You should get "listening on port 8080" if it's working.
 
-In the project directory, you can run:
+On the other terminal, run 'npm start' to run front end.
+
+## Using the GUI.
+
+Create new nodes and connect them together via the backend to the frontside.
+
+Add a "prompt" if you want to create an mp3 file for that node.
+
+Adding a "trigger" will not create a sound file, but will be stored as part of the object connection structure.
+
+If you have a desired flow, like above, you can save and 
+
+## Saving.
+
+If you have the desired flow, click save. This will create an mp3 file per prompt and will also produce an JSON object structure of the flow.
+
+## Variables.
+
 
 ### `npm start`
 
