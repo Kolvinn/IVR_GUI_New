@@ -1,0 +1,113 @@
+{
+  "elements": [
+    {
+      "id": "node_1633267130695",
+      "type": "special",
+      "position": {
+        "x": -513.9171660301502,
+        "y": 324.96174169490223
+      },
+      "data": {
+        "nodeId": "node_1633267130695",
+        "text": "node_1633267130695",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 915.0828339698498
+        },
+        "y": {
+          "y": 955.9617416949022
+        },
+        "trigger": "",
+        "prompt": "say 1 or 2",
+        "connection": [
+          {
+            "source": "node_1633267130695",
+            "sourceHandle": "b",
+            "target": "node_1633267132893",
+            "targetHandle": null
+          },
+          {
+            "source": "node_1633267130695",
+            "sourceHandle": "b",
+            "target": "node_1633267157115",
+            "targetHandle": null
+          }
+        ],
+        "audioFileLocation": "node_1633267130695.mp3"
+      }
+    },
+    {
+      "id": "node_1633267132893",
+      "type": "special",
+      "position": {
+        "x": -126.03261429950612,
+        "y": 266.8873811284784
+      },
+      "data": {
+        "nodeId": "node_1633267132893",
+        "text": "node_1633267132893",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 369.9673857004939
+        },
+        "y": {
+          "y": 1018.8873811284784
+        },
+        "trigger": "1",
+        "prompt": "thanks 1",
+        "connection": [],
+        "audioFileLocation": "node_1633267132893.mp3"
+      }
+    },
+    {
+      "id": "node_1633267157115",
+      "type": "special",
+      "position": {
+        "x": -126.98122806159023,
+        "y": 408.42495856057053
+      },
+      "data": {
+        "nodeId": "node_1633267157115",
+        "text": "node_1633267157115",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 60.01877193840977
+        },
+        "y": {
+          "y": 667.4249585605705
+        },
+        "trigger": "2",
+        "prompt": "thanks 2",
+        "connection": [],
+        "audioFileLocation": "node_1633267157115.mp3"
+      }
+    },
+    {
+      "source": "node_1633267130695",
+      "sourceHandle": "b",
+      "target": "node_1633267132893",
+      "targetHandle": null,
+      "id": "reactflow__edge-node_1633267130695b-node_1633267132893null",
+      "type": "default"
+    },
+    {
+      "source": "node_1633267130695",
+      "sourceHandle": "b",
+      "target": "node_1633267157115",
+      "targetHandle": null,
+      "id": "reactflow__edge-node_1633267130695b-node_1633267157115null",
+      "type": "default"
+    }
+  ],
+  "position": [
+    869.2834379363854,
+    25.27216359810666
+  ],
+  "zoom": 1.1367874248827992
+}

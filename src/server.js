@@ -46,7 +46,7 @@ app.post('/writefile',(req, res,next) => {
    // var data = JSON.stringify(req.body);
     if(data){
         try {
-            fs.writeFileSync("lmao.json", data);
+            fs.writeFileSync("file.json", data);
         } catch (err) {
             console.log("throwing error!");
             throw err;
