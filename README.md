@@ -24,6 +24,17 @@ If you have the desired flow, click save. This will create an mp3 file per promp
 
 ## Variables.
 
+in src/server.js, you can 
+- change the name of the .json file that is produced when you save.
+- change the lanuage of Googletts in the /fetchtext method.
+- You can also change ports that are used via app.listen. Though package.json has a proxy set up for localhost:8080 currently.
+- **Change the directory where the mp3 and json files are stored via the directory object. Currently to set some C drive. You will have to change this**
+
+in App.tsx you can
+- Search for onAdd method. IN there is the newNode data structure that is passed around. The saved data is stored in the data section.
+- Search for onSave method. You can change the name of the mp3 files created (it's currently the node id + .mp3)
+
+
 
 ### `npm start`
 
