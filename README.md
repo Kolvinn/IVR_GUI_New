@@ -2,7 +2,9 @@
 
 Download and install node.js
 
-cd into cloned folder - 'npm i' to install packages
+pull this repo
+
+cd into cloned folder and run 'npm i' to install packages
 
 Open another terminal and cd into src. Run 'node server.js' to start running the node js backend server. You should get "listening on port 8080" if it's working.
 
@@ -15,8 +17,6 @@ Create new nodes and connect them together via the backend to the frontside.
 Add a "prompt" if you want to create an mp3 file for that node.
 
 Adding a "trigger" will not create a sound file, but will be stored as part of the object connection structure.
-
-If you have a desired flow, like above, you can save and 
 
 ## Saving.
 
