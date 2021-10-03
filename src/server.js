@@ -31,7 +31,8 @@ app.get('/fetchtext', (req, res) => {
      * This is the google call tts call. 
      * I haven't looked at what saveFile actually returns beyond the file.
      */
-    GoogleTts.saveFile(prompt, "id", fileName).then((vars)=> 
+
+    GoogleTts.saveFile(prompt, "EN", fileName).then((vars)=> 
     {
         console.log(vars);
     });
