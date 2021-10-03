@@ -16,11 +16,54 @@ Create new nodes and connect them together via the backend to the frontside.
 
 Add a "prompt" if you want to create an mp3 file for that node.
 
-Adding a "trigger" will not create a sound file, but will be stored as part of the object connection structure.
+Adding a "trigger" will not create a sound file, but will be stored as part of the object connection structure. See below image
+
+![alt text](https://github.com/Kolvinn/IVR_GUI_New/blob/main/src/ScreenFlow.png?raw=true)
 
 ## Saving.
 
 If you have the desired flow, click save. This will create an mp3 file per prompt and will also produce an JSON object structure of the flow.
+
+You can have a look at an example .json file that will be printed via the above image here https://github.com/Kolvinn/IVR_GUI_New/blob/main/src/lmao.json. The JSON object is a list of node objects and edge objects. A node object, as below, will have a reference to all the nodes it is connected to via the connections section.
+
+{
+      "id": "node_1633267130695",
+      "type": "special",
+      "position": {
+        "x": -513.9171660301502,
+        "y": 324.96174169490223
+      },
+      "data": {
+        "nodeId": "node_1633267130695",
+        "text": "node_1633267130695",
+        "type": {
+          "type": "special"
+        },
+        "x": {
+          "x": 915.0828339698498
+        },
+        "y": {
+          "y": 955.9617416949022
+        },
+        "trigger": "",
+        "prompt": "say 1 or 2",
+        "connection": [
+          {
+            "source": "node_1633267130695",
+            "sourceHandle": "b",
+            "target": "node_1633267132893",
+            "targetHandle": null
+          },
+          {
+            "source": "node_1633267130695",
+            "sourceHandle": "b",
+            "target": "node_1633267157115",
+            "targetHandle": null
+          }
+        ],
+        "audioFileLocation": "node_1633267130695.mp3"
+      }
+    },
 
 ## Variables.
 
