@@ -89,6 +89,7 @@
 
     const createAudioFile = (fileName:string, prompt:string) =>{
       console.log(fileName, prompt);
+      fetch('http://localhost:8080/fetchtext?fileName='+ fileName+'&prompt='+prompt,{mode: 'cors'});
     }
 
 
@@ -327,7 +328,7 @@
         })
         .catch(err => console.log(err));
 
-        fetch('http://localhost:8080/fetchtext',{mode: 'cors'});
+       // fetch('http://localhost:8080/fetchtext',{mode: 'cors'});
     }
       // fetching the GET route from the Express server which matches the GET route from server.js
     callBackendAPI = async () => {

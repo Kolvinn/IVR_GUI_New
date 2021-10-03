@@ -19,21 +19,22 @@ app.listen(8080, () => {
 
 app.get('/fetchtext', (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-
+    var prompt = req.query.prompt;
+    var fileName = "C:/Users/jerem/ReactTest/finalapp/IVR_GUI_New/src/" +req.query.fileName;
     // console.log(res);
     // //res.send('This has CORS enabled 🎈');
-     const url = googleTTS.getAudioUrl('Hello World', {
-         lang: 'en',
-        slow: false,
-         host: 'https://translate.google.com',
-       });
-    console.log(url); // https://translate.google.com/translate_tts?...
+    //  const url = googleTTS.getAudioUrl(prompt, {
+    //      lang: 'en',
+    //     slow: false,
+    //      host: 'https://translate.google.com',
+    //    });
+    // console.log(url); // https://translate.google.com/translate_tts?...
     
-    //fetch(url, {mode: 'cors'});
+    // //fetch(url, {mode: 'cors'});
 
-    FileSaver.saveAs(url, "./src/blahblah.mp3");
-
-    GoogleTts.saveFile("abc", "id", "C:/Users/jerem/ReactTest/finalapp/IVR_GUI_New/src/audio.mp3").then(console.log);
+    // FileSaver.saveAs(url, "./src/blahblah.mp3");
+    console.log(prompt, fileName);
+    GoogleTts.saveFile(prompt, "id", fileName).then(console.log);
 
     
 
