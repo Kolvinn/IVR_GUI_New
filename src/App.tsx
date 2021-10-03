@@ -99,11 +99,12 @@ export const SaveRestore = () => {
        */
       flow.elements.forEach(element => {
         if(element.id != null && element.data != null){
-          var audioFile:string = element.id + '.mp3';
-          console.log("ELEMENTAL DATA: ", element.data);
-          element.data.audioFileLocation = audioFile;
+
+          var audioFileName:string = element.id + '.mp3';
+
+          element.data.audioFileLocation = audioFileName;
           //console.log(element.data.audioFileLocation);
-          createAudioFile(audioFile, element.data.prompt);          
+          createAudioFile(audioFileName, element.data.prompt);          
         }
       });
 
