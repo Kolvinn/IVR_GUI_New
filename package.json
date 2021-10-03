@@ -11,16 +11,22 @@
     "@types/jest": "^26.0.24",
     "@types/react": "^17.0.26",
     "@types/react-dom": "^17.0.9",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
     "file-saver": "^2.0.5",
     "google-tts-api": "^2.0.2",
     "google-tts.js": "0.0.1",
     "localforage": "^1.10.0",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-flow-renderer": "^9.6.7",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "write-json-file": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
