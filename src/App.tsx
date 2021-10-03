@@ -1,273 +1,366 @@
-import React, { useState,  MouseEvent, useCallback  } from 'react';
-import ReactFlow, {
-  ReactFlowProvider,
-  removeElements,
-  addEdge,
-  useZoomPanHelper,
-  Elements,
-  OnLoadParams, Edge, Connection, Controls, updateEdge,Position, Handle,Background,isNode, FlowElement,Node,BackgroundVariant
-} from 'react-flow-renderer';
-import localforage from 'localforage';
+  import React, { useState,  MouseEvent, useCallback  } from 'react';
+  import ReactFlow, {
+    ReactFlowProvider,
+    removeElements,
+    addEdge,
+    useZoomPanHelper,
+    Elements,
+    OnLoadParams, Edge, Connection, Controls, getConnectedEdges,Position, Handle,Background,isNode, FlowElement,Node,BackgroundVariant
+  } from 'react-flow-renderer';
+  import localforage from 'localforage';
 
-import './save.css';
-import './App.css';
-import { idText } from 'typescript';
-//const GoogleTts = require("google-tts.js") 
-import * as googleTTS from 'google-tts-api'; // ES6 or TypeScript
-import { saveAs } from "file-saver";
+  import './save.css';
+  import './App.css';
+  import { idText } from 'typescript';
+  //const GoogleTts = require("google-tts.js") 
+  import * as googleTTS from 'google-tts-api'; // ES6 or TypeScript
+  import { saveAs } from "file-saver";
+  import { setConnectionPosition } from 'react-flow-renderer/dist/store/actions';
+
+  declare type Connect<T = any> = {
+    source:string|null,
+    target:string|null,
+  }
+
+  declare type ConnectionData<T = any> = Array<Connect<T>>;
+
+  interface ConnectionProps {
+    connections: ConnectionData[];
+  }
+
+  const http = require("http");
+
+  localforage.config({
+    name: 'react-flow-docs',
+    storeName: 'flows',
+  });
 
 
-const http = require("http");
+  const flowKey = 'example-flow';
 
-localforage.config({
-  name: 'react-flow-docs',
-  storeName: 'flows',
-});
+  const getNodeId = () => `node_${+new Date()}`;
 
-const flowKey = 'example-flow';
 
-const getNodeId = () => `randomnode_${+new Date()}`;
+  const initialElements: Elements = [];
 
-const initialElements: Elements = [
-  // { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, className: 'light' },
-  // { id: '2', data: { label: 'Node 2' }, position: { x: 100, y: 100 }, className: 'light' },
-  // { id: '3', data: { label: 'Node 3' }, position: { x: 400, y: 100 }, className: 'light' },
-  // { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, className: 'light' },
-  // { id: 'e1-2', source: '1', target: '2', animated: true },
-  // { id: 'e1-3', source: '1', target: '3' },
-  {
-    id: '6',
-    type: 'special',
-    position: { x: 160, y: 200 },
-    data: { idthing: 'lolololol', text: 'A custom node', id:'6', type:'special' },
-  },
-];
 
-// function fun() {
-//   console.log('test');
-// }
-export const SaveRestore = () => {
   
-  
-  //  add_header 'Access-Control-Allow-Origin' "*";
-  //  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';
-  //  add_header 'Access-Control-Allow-Headers' 'appID,authorizationkey';
-  //  //saveFile();
-  //  fetch(url)
-  //       .then(res => res.blob())
-  //       .then((blob) => {
-  //         console.log(blob);
-  //           //saveAs(blob, 'my-file-label.pdf');
-  //   });
+ 
 
-  //   fetch(url, {
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //       Token: "sfg999666t673t7t82",
-  //       Access-Control-Allow-Origin: "*";
-  //     },
-  //     method: "POST"
-  //   });
-  
 
- //GoogleTts.saveFile("abc", "id", "./src/audio.mp3").then(console.log)
 
-  const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
-  const [elements, setElements] = useState<Elements>(initialElements);
 
-  const onElementsRemove = (elementsToRemove: Elements) => setElements((els) => removeElements(elementsToRemove, els));
-  const onConnect = (params: Edge | Connection) => setElements((els) => addEdge(params, els));
-  const onLoad = (reactFlowInstance: OnLoadParams) => setRfInstance(reactFlowInstance);
 
-  const { transform } = useZoomPanHelper();
-  
 
-  const onSave = useCallback(() => {
-    console.log("saving");
-    console.log(rfInstance);
-    if (rfInstance) {
-      const flow = rfInstance.toObject();
-      localforage.setItem(flowKey, flow);
+
+
+
+
+
+
+  export const SaveRestore = () => {
+
+
+    // const checkNodeExists= (data:any)=>{
+    //   state.forEach(element =>{
+    //     console.log(element.id, data.nodeId);
+    //      if(element.id = data.id){
+    //        console.log('node exists');
+    //      }
+    //   });
+    // };
+
+    const state: ConnectionData = [];
+    
+  // modal.connections.push(null);
+
+    const [rfInstance, setRfInstance] = useState<OnLoadParams | null>(null);
+    const [elements, setElements] = useState<Elements>(initialElements);
+
+    const onElementsRemove = (elementsToRemove: Elements) => setElements((els) => removeElements(elementsToRemove, els));
+    const onConnect = (params: Edge | Connection) => {
+      
+      setElements((els) => addEdge(params, els));
+      
     }
-  }, [rfInstance]);
+    const onLoad = (reactFlowInstance: OnLoadParams) => setRfInstance(reactFlowInstance);
 
-  const onRestore = useCallback(() => {
-    const restoreFlow = async () => {
-      const flow = await localforage.getItem<any>(flowKey);
+    const { transform } = useZoomPanHelper();
 
-      if (flow) {
-        const [x = 0, y = 0] = flow.position;
-        setElements(flow.elements || []);
-        transform({ x, y, zoom: flow.zoom || 0 });
+    const createAudioFile = (fileName:string, prompt:string) =>{
+      console.log(fileName, prompt);
+    }
+
+
+    /**
+     * Saves the state of the current diagram and creates audio file if there is one.
+     */
+    const onSave = useCallback(() => {
+      console.log("saving");
+      if (rfInstance) {
+        const flow = rfInstance.toObject();
+        localforage.setItem(flowKey, flow);
+
+        var i = 0;
+        flow.elements.forEach(element => {
+          if(element.id != null && element.data != null){
+            var audioFile:string = element.id + '.mp3';
+            console.log("ELEMENTAL DATA: ", element.data);
+            element.data.audioFileLocation = audioFile;
+            //console.log(element.data.audioFileLocation);
+            createAudioFile(audioFile, element.data.prompt);
+          }
+        });
+
       }
-    };
+    }, [rfInstance]);
 
-    restoreFlow();
-  }, [setElements, transform]);
+    const onRestore = useCallback(() => {
+      const restoreFlow = async () => {
+        const flow = await localforage.getItem<any>(flowKey);
 
-  
-  const onAdd = useCallback(() => {
-    var id = getNodeId();
-    var type = 'special';
-    var x = Math.random() * window.innerWidth - 100;
-    var y =Math.random() * window.innerHeight;
-    const newNode = {
-        id: id,
-        type: type,
-        position: {
-          x: x,
-          y: y,
-        },
-        data: { text: 'A custom node', type: {type}, x: {x}, y:{y}},
+        if (flow) {
+          const [x = 0, y = 0] = flow.position;
+          setElements(flow.elements || []);
+          transform({ x, y, zoom: flow.zoom || 0 });
+        }
       };
 
-    setElements((els) => els.concat(newNode));
-  }, [setElements]);
+      restoreFlow();
+    }, [setElements, transform]);
+
+    
+    /**
+     * Used to add componenets on the screen
+     */
+    const onAdd = useCallback(() => {
+      var id = getNodeId();
+      var type = 'special';
+      var x = Math.random() * window.innerWidth - 100;
+      var y =Math.random() * window.innerHeight;
+      const newNode = {
+          id: id,
+          type: type,
+          position: {
+            x: x,
+            y: y,
+          },
+          data: { nodeId: id,text: id, type: {type}, x: {x}, y:{y}, trigger: "", prompt:"", connection:[], audioFileLocation:""},
+        };
+        // state.push({
+        //   id:id,
+        //   trigger:"",
+        //   prompt: "",
+        //   connections: [],
+        //   promptFile: "",
+        // });
+       
+      setElements((els) => els.concat(newNode));
+    }, [setElements]);
+
+
+    
+
+    const customNodeStyles = {
+      background: '#9CA8B3',
+      color: '#FFF',
+      padding: 10,
+      width: 210,
+      height: 100,
+    };
+    // const handleInputChange = (e:any) => {
+    //     this.setState({ value: e.target.value });
+    //   }
+    const CustomNodeComponent = ( {data} : {data:any})  => {
 
 
 
-  const customNodeStyles = {
-    background: '#9CA8B3',
-    color: '#FFF',
-    padding: 10,
-    width: 210,
-    height: 100,
-  };
-  const CustomNodeComponent = ( {data} : {data:any})  => {
 
+
+
+
+
+    const handleInputChange = (e:any, type:string, data:any) => {
+      if(type == "prompt"){
+        data.prompt = e.target.value;
+      }
+      else if (type =="trigger"){
+        data.trigger = e.target.value;
+      }
+     console.log(e.target.value);
+     console.log(data);
+
+    };
+    
+      
+      return (
+        <div style={customNodeStyles}>
+          
+          <Handle type="target" position = {Position.Left} style={{ borderRadius: 0 }} />
+          <div>{data.text}</div>
+          <Handle
+            type="source"
+            position={Position.Right} 
+            id="b"
+            style={{ top: '20%', borderRadius: 0 }}
+            onConnect = {(connection) => {
+              data.connection.push(connection);
+            }}
+          />
+          <Handle
+            type="source"
+            position={Position.Right} 
+            id="b"
+            style={{ top: '40%', borderRadius: 0 }}
+            onConnect = {(connection) => {
+              data.connection.push(connection);
+            }}
+          />
+          <Handle
+            type="source"
+            position={Position.Right} 
+            id="b"
+            style={{ top: '60%', borderRadius: 0 }}
+            onConnect = {(connection) => {
+              data.connection.push(connection);
+            }}
+          />
+          <Handle
+            type="source"
+            position={Position.Right} 
+            id="b"
+            style={{ top: '80%', borderRadius: 0 }}
+            onConnect = {(connection) => {
+              data.connection.push(connection);
+            }}
+          />
+          <div className = "box-flex">
+            <div className = "input-flex">
+              <label>Trigger</label>
+              <input className = "lbl" onChange = { (e) => {handleInputChange(e, "trigger",data)}}></input>
+            </div>
+            <div className = "input-flex">
+              <label>Prompt</label>
+              <input className = "lbl" onChange = { (e) => {handleInputChange(e, "prompt",data)}}></input>
+            </div>
+            {/* <div className = "input-flex">
+              <label></label>
+              <input></input>
+            </div> */}
+          </div>
+          </div>
+      );
+    };
+    const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
+    const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
+
+    const nodeTypes = {
+      special: CustomNodeComponent,
+    };
+    
     return (
-      <div style={customNodeStyles}>
+        <div className = "holder">
+          <div className = "button-holder">
+            <button onClick={onSave}>save</button>
+            <button onClick={onRestore}>restore</button>
+            <button onClick={onAdd}>add node</button>
+          </div>
+        <ReactFlow
+          elements={elements}
+          nodeTypes = {nodeTypes}
+          onElementClick={onElementClick}
+          onNodeDragStop={onNodeDragStop}
+          onElementsRemove={onElementsRemove}
+          onConnect={onConnect}
+          onLoad={setRfInstance}
+          defaultZoom={1.5}
+          minZoom={0.2}
+          maxZoom={4}
+        >
+          <Background variant={BackgroundVariant.Lines} />
+          {/* <div style={{ position: 'absolute', right: 10, top: 10, zIndex: 4 }}>
+          { <button onClick={resetTransform} style={{ marginRight: 5 }}>
+            reset transform
+          </button>
+          <button onClick={updatePos} style={{ marginRight: 5 }}>
+            change pos
+          </button>
+          <button onClick={toggleClassnames} style={{ marginRight: 5 }}>
+            toggle classnames
+          </button>
+          <button onClick={logToObject}>toObject</button> 
+        </div> */}
+          
+        </ReactFlow>
+        <div className="save__controls">
         
-        <Handle type="target" position = {Position.Left} style={{ borderRadius: 0 }} />
-        <div>{data.text}</div>
-        <Handle
-          type="source"
-          position={Position.Right} 
-          id="a"
-          style={{ top: '30%', borderRadius: 0 }}
-        />
-        <Handle
-          type="source"
-          position={Position.Right} 
-          id="b"
-          style={{ top: '70%', borderRadius: 0 }}
-        />
-        <div className = "box-flex">
-          <div className = "input-flex">
-            <label>Trigger</label>
-            <input className = "lbl"></input>
-          </div>
-          <div className = "input-flex">
-            <label>Prompt</label>
-            <input className = "lbl"></input>
-          </div>
-          <div className = "input-flex">
-            <label></label>
-            <input></input>
-          </div>
-        </div>
-        </div>
+      </div>
+      </div>
+        
     );
   };
-  const onNodeDragStop = (_: MouseEvent, node: Node) => console.log('drag stop', node);
-  const onElementClick = (_: MouseEvent, element: FlowElement) => console.log('click', element);
-
-  const nodeTypes = {
-    special: CustomNodeComponent,
-  };
-  
-  return (
-      <div className = "holder">
-        <div className = "button-holder">
-          <button onClick={onSave}>save</button>
-          <button onClick={onRestore}>restore</button>
-          <button onClick={onAdd}>add node</button>
-        </div>
-      <ReactFlow
-        elements={elements}
-        nodeTypes = {nodeTypes}
-        onElementClick={onElementClick}
-        onNodeDragStop={onNodeDragStop}
-        onElementsRemove={onElementsRemove}
-        onConnect={onConnect}
-        onLoad={setRfInstance}
-        defaultZoom={1.5}
-        minZoom={0.2}
-        maxZoom={4}
-      >
-        <Background variant={BackgroundVariant.Lines} />
-        {/* <div style={{ position: 'absolute', right: 10, top: 10, zIndex: 4 }}>
-        { <button onClick={resetTransform} style={{ marginRight: 5 }}>
-          reset transform
-        </button>
-        <button onClick={updatePos} style={{ marginRight: 5 }}>
-          change pos
-        </button>
-        <button onClick={toggleClassnames} style={{ marginRight: 5 }}>
-          toggle classnames
-        </button>
-        <button onClick={logToObject}>toObject</button> 
-      </div> */}
-        
-      </ReactFlow>
-      <div className="save__controls">
-      
-    </div>
-    </div>
-      
-  );
-};
 
 
 
-export default class App extends React.Component {
-  state = {
-    data: null
-  };
-  componentDidMount() {
-    this.callBackendAPI()
-      .then(res => {
-        this.setState({ data: res.express });
-        console.log(res);
-        
-      })
-      .catch(err => console.log(err));
 
-      fetch('http://localhost:8080/fetchtext',{mode: 'cors'});
-  }
-    // fetching the GET route from the Express server which matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('http://localhost:8080/cors', {mode: 'cors'});
-    const body = await response.json();
-    console.log('using cors',body);
 
-    if (response.status !== 200) {
-      throw Error(body.message) 
+
+
+
+
+
+
+
+
+
+
+  export default class App extends React.Component {
+    state = {
+      data: null
+    };
+    componentDidMount() {
+      this.callBackendAPI()
+        .then(res => {
+          this.setState({ data: res.express });
+          console.log(res);
+          
+        })
+        .catch(err => console.log(err));
+
+        fetch('http://localhost:8080/fetchtext',{mode: 'cors'});
     }
-    return body;
-  }
-  render() {
-    return (
-      <ReactFlowProvider >
+      // fetching the GET route from the Express server which matches the GET route from server.js
+    callBackendAPI = async () => {
+      const response = await fetch('http://localhost:8080/cors', {mode: 'cors'});
+      const body = await response.json();
+      console.log('using cors',body);
 
-         <SaveRestore/>
-         <p className="App-intro">{this.state.data}</p>
-     </ReactFlowProvider>
+      if (response.status !== 200) {
+        throw Error(body.message) 
+      }
+      return body;
+    }
+    render() {
+      return (
+        <ReactFlowProvider >
 
-    );
-  }
-}
+          <SaveRestore/>
+          
+      </ReactFlowProvider>
 
-// class App extends React.Component() {
-//   Render() {}
-//     return (
-//     <ReactFlowProvider >
+      );
+    }
+  };
 
-//         <SaveRestore/>
-        
-//     </ReactFlowProvider>
-//   );
-// }
-// }
+  // class App extends React.Component() {
+  //   Render() {}
+  //     return (
+  //     <ReactFlowProvider >
+
+  //         <SaveRestore/>
+          
+  //     </ReactFlowProvider>
+  //   );
+  // }
+  // }
 
