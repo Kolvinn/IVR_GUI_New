@@ -25,7 +25,7 @@ export const CustomNodeComponent = ( {data} : {data:any})  => {
   
     
     return (
-      <div style={customNodeStyles}>
+      <div className = "parent-box">
         
         <Handle type="target" position = {Position.Left} style={{ borderRadius: 0 }} />
         <div>{data.text}</div>
